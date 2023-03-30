@@ -1,0 +1,13 @@
+{
+    "network": [
+        "ssid": "myssid",
+        "secret": "mysecret"
+    ],
+    "reolink": [
+        "nvr_ip": "nvr_ip_address",
+        "nvr_api_key": "nvr_api_key"
+    ],
+    "output": [
+        "alm_duration": "int: alarm duration in seconds"
+    ]
+}
