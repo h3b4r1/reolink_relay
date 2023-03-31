@@ -1,2 +1,2 @@
 # reolink_relay
-MIcropython build to activate relay on reolink alarm via api
+Code to drive an ESP8266 based microcontroller running micropython.
