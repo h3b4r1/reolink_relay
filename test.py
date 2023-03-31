@@ -7,11 +7,11 @@ with open('config.json') as fh:
     config = json.load(fh)
     
 
-    
 # Create the api object
 def main():
-    print(get_api_key(config))
-    print(alm_state(config,get_api_key(config)))
+    # print(get_api_key(config))
+    # print(json.dumps(get_dev_info(config,get_api_key(config)), indent=4))
+    print(json.dumps(alm_state(config,get_api_key(config)), indent=4))
 
 
 def get_api_key(config):
@@ -31,19 +31,16 @@ def get_api_key(config):
 
 
 def alm_state(config,token):
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
+
+
+def get_dev_info(config,token):
     payload = [
         {
-            "cmd":"GetAlarm",
-            "action":1,
-            "param":{
-                "Alarm":{
-                    "type":"md",
-                    "channel":0,
-                }
-            }
+            "cmd":"GetChannelStatus",
         }
     ]
-    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetAlarm&token={token}', json=payload).json()
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()
 
 
 if __name__ == "__main__":
