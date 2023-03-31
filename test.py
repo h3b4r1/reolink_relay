@@ -11,6 +11,7 @@ with open('config.json') as fh:
 # Create the api object
 def main():
     print(get_api_key(config))
+    print(alm_state(config,get_api_key(config)))
 
 
 def get_api_key(config):
@@ -27,6 +28,23 @@ def get_api_key(config):
         }
     ]
     return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
+
+
+def alm_state(config,token):
+    payload = [
+        {
+            "cmd":"GetAlarm",
+            "action":1,
+            "param":{
+                "Alarm":{
+                    "type":"md",
+                    "channel":0,
+                }
+            }
+        }
+    ]
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetAlarm&token={token}', json=payload).json()
+
 
 if __name__ == "__main__":
     main()

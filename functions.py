@@ -14,7 +14,7 @@ class Reo_api:
         ''' instantiate the NVR object '''
         self.ip = ip
         self.api_cred = (uname,pword)
-        self.api_obj = requests(f"http://{self.ip}")
+        self.api_token = get_api_token()
         
         @property
         def __str__(self):
@@ -48,6 +48,31 @@ class Reo_api:
             
         @property
         def alm_state(self):
-            return self.api_obj()
-            ...
+            payload = [
+                {
+                    "cmd":"GetAlarm",
+                    "action":1,
+                    "param":{
+                        "Alarm":{
+                            "type":"md",
+                            "channel":0,
+                        }
+                    }
+                }
+            ]
+            return requests.post(f'http://{self.ip}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload).json()
         
+        def get_api_token(self):
+            payload = [
+                {
+                    "cmd":"Login",
+                    "param":{
+                        "User":{
+                            "Version":"0",
+                            "userName":self.api_cred[0],
+                            "password":self.api_cred[1]
+                        }
+                    }
+                }
+            ]
+            return requests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
