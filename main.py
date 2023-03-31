@@ -1,7 +1,17 @@
 import json
+import functions
 
-def main():
+# Load config
+with open('config.json') as fh:
+    config = json.load(fh)
+
+# create nvr_obj
+nvr_obj = functions.Reo_api()
+
+def main(nvr_obj):
     while True:
+        # defines poll interval
+        sleep(config["operation"]["poll_int"])
         # Pull the API value
     ...    
 
