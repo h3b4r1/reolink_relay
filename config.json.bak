@@ -1,15 +1,15 @@
 {
     "network": {
-        "ssid": "Private",
-        "secret": "Mytindale1!"
+        "ssid": "myssid",
+        "secret": "mysecret"
     },
     "operation": {
         "poll_int": "5"
     },
     "reolink": {
-        "nvr_un": "apiuser",
-        "nvr_pw": "apipassword",
-        "nvr_ip": "192.168.4.5"
+        "nvr_un": "nvr username",
+        "nvr_pw": "nvr_ password",
+        "nvr_ip": "nvr_ip_address"
     },
     "output": {
         "alm_duration": "int: alarm duration in seconds"
