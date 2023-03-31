@@ -1,17 +1,28 @@
 import json
 import requests
-import sys
+from time import sleep
 
 # Pull the config
 with open('config.json') as fh:
     config = json.load(fh)
     
 
-# Create the api object
 def main():
-    # print(get_api_key(config))
-    # print(json.dumps(get_dev_info(config,get_api_key(config)), indent=4))
-    print(json.dumps(alm_state(config,get_api_key(config)), indent=4))
+    # Get API token
+    token = 0
+    while not token:
+        try:
+            token = get_api_key(config)
+        except:
+            print("API session limit exceeded")
+            sleep(10)
+    while True:
+        # print(get_api_key(config))
+        # print(json.dumps(get_dev_info(config,get_api_key(config)), indent=4))
+        if alm_state(config, token):
+            print("Alarm active")
+            sleep(30)          
+        sleep(1)
 
 
 def get_api_key(config):
