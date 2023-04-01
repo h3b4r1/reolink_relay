@@ -13,6 +13,7 @@ def main():
     while not token:
         try:
             token = get_api_key(config)
+            print("new token")
         except:
             print("API session limit exceeded")
             sleep(10)
