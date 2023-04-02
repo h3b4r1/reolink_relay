@@ -2,31 +2,31 @@ import json
 import requests
 from time import sleep
 
-# Pull the config
-with open('config.json') as fh:
+with open('config.json.local') as fh:
     config = json.load(fh)
     
 
 def main():
-    # Get API token
     token = 0
     while not token:
         try:
             token = get_api_key(config)
-            print("new token")
-        except:
-            print("API session limit exceeded")
+            print(f"new token : {token}")
+        except Exception as error:
+            print(f"API session limit exceeded : {error}")
             sleep(10)
+    print(" ")
     while True:
-        # print(get_api_key(config))
-        # print(json.dumps(get_dev_info(config,get_api_key(config)), indent=4))
         if alm_state(config, token):
             print("Alarm active")
-            sleep(30)          
+            sleep(30)
+        else:
+            print(".", end="")
         sleep(1)
 
 
 def get_api_key(config):
+    print("get key")
     payload = [
         {
             "cmd":"Login",
