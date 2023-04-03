@@ -1,5 +1,4 @@
 import requests
-import stm
 
 class Reo_api:
     '''
@@ -87,3 +86,4 @@ class Reo_api:
                 }
             ]
             return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()
+
