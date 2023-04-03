@@ -10,10 +10,10 @@ class Reo_api:
     - provide for retreival of alarm state
     
     '''
-    def __init__(self,ip,uname,pword):
+    def __init__(self,config):
         ''' instantiate the NVR object '''
         self.ip = ip
-        self.api_cred = (uname,pword)
+        self.api_cred = (config["reolink"]["nvr_un"],config["reolink"]["nvr_pw"])
         self.api_token = get_api_token()
         
         @property
@@ -76,3 +76,14 @@ class Reo_api:
                 }
             ]
             return requests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
+
+        def alm_state(config,token):
+            return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
+
+        def get_dev_info(config,token):
+            payload = [
+                {
+                    "cmd":"GetChannelStatus",
+                }
+            ]
+            return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()

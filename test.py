@@ -25,8 +25,7 @@ def main():
         sleep(1)
 
 
-def get_api_key(config):
-    print("get key")
+def get_api_token(config):
     payload = [
         {
             "cmd":"Login",

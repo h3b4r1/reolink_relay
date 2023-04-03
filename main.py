@@ -13,7 +13,6 @@ def main(nvr_obj):
         # defines poll interval
         sleep(config["operation"]["poll_int"])
         # Pull the API value
-    ...    
 
 
 if __name__ == "__main__":
