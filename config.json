@@ -7,9 +7,9 @@
         "poll_int": "5"
     },
     "reolink": {
-        "nvr_un": "<Reolink NVR Username>",
-        "nvr_pw": "Reolink NVR Password",
-        "nvr_ip": "Reolink NVR IP Address"
+        "nvr_un": "apiuser",
+        "nvr_pw": "apipassword",
+        "nvr_ip": "192.168.4.5"
     },
     "output": {
         "alm_duration": "int: alarm duration in seconds"
