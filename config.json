@@ -1,7 +1,7 @@
 {
     "network": {
-        "ssid": "<Wifi SSID>",
-        "secret": "<Wifi Password"
+        "ssid": "security",
+        "secret": "TindaleSecure1!"
     },
     "operation": {
         "poll_int": "5"
