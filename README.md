@@ -7,7 +7,7 @@ remotely triggering an external device such as an audio alarm or strobe light.
 This build was done using a NodeMCU ESP8266 microcontroller running Micropython 
 version 1.19.
 
-mbremote was used to load files and libraries to the microcontroler once the firmware 
+[mbremote](https://docs.micropython.org/en/latest/reference/mpremote.html) was used to load files and libraries to the microcontroler once the firmware 
 was loaded. 
 
 
