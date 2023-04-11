@@ -14,7 +14,7 @@ while not token:
     try:
         token = get_api_key(config)
     except Exception as error:
-        lcd_load(lcd, "API Failure", address)
+        lcd_load(lcd, "API Failure", sta_if.ifconfig()[0])
         sleep(10)
 
 def main():
