@@ -4,25 +4,14 @@ import urequests
 from machine import Pin, I2C
 from i2c_lcd import I2cLcd
 from time import sleep
+from functions import Reo_api, lcd_load, lcd_create, get_api_token, alm_state, get_dev_info
 
-# Load config
-with open('config.json') as fh:
-    config = json.load(fh)
-    
 # Configure the LCD 
-i2c = I2C(scl=Pin(5), sda=Pin(4), freq=10000)
-lcd = I2cLcd(i2c, 0x27, 2, 16)
+lcd = lcd_create(0x27, 5, 4)
 sleep(2)
 
-# Load IP to the LCD
-ifconfig = sta_if.ifconfig()
-lcd.clear()
-lcd.putstr(f"{ifconfig[0]}" + " " * (16 - len(ifconfig[0])))
-lcd.putstr("| Remote Alarm |")
-
-# Configure the alarm Pin
+# Configure the siren
 p2 = Pin(2, Pin.OUT)
-p2.value(0)
 
 # create nvr_obj
 nvr_obj = functions.Reo_api()
@@ -38,11 +27,18 @@ def main(nvr_obj):
             sleep(10)
     print(" ")
     while True:
+        # Load IP to the LCD
+        if address != sta_if.ifconfig()[0]:
+            address = sta_if.ifconfig()[0]
+            lcd_load(lcd, message, address)
+            sleep(2)
+        
+        # Pull the alarm status
         if alm_state(config, token):
-            print("Alarm active")
+            p2.value(1)
+            sleep(5)
+            p2.value(0)
             sleep(30)
-        else:
-            print(".", end="")
         sleep(1)
 
 

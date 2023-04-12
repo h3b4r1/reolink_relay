@@ -1,4 +1,7 @@
-import requests
+import urequests
+from machine import Pin, I2C
+from i2c_lcd import I2cLcd
+
 
 class Reo_api:
     '''
@@ -59,7 +62,7 @@ class Reo_api:
                     }
                 }
             ]
-            return requests.post(f'http://{self.ip}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload).json()
+            return urequests.post(f'http://{self.ip}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload).json()
         
         def get_api_token(self):
             payload = [
@@ -84,7 +87,7 @@ class Reo_api:
         def api_token():
             
         def alm_state(config,token):
-            return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
+            return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
 
         def get_dev_info(config,token):
             payload = [
@@ -92,5 +95,50 @@ class Reo_api:
                     "cmd":"GetChannelStatus",
                 }
             ]
-            return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()
+            return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()
+
+
+def lcd_load(lcd, message="", address=""):
+    lcd.clear()
+    lcd.putstr(f"{address}" + " " * (16 - len(address)))
+    if message:
+        lcd.putstr(message)
+    else:
+        lcd.putstr("-" * 16)
+
+
+def lcd_create(addr, sclPin, sdaPin):
+    I2C_ADDR = addr
+    totalRows = 2
+    totalColumns = 16
+    i2c = I2C(scl=Pin(sclPin), sda=Pin(sdaPin), freq=10000)
+    return I2cLcd(i2c, I2C_ADDR, totalRows, totalColumns)
+
+def get_api_token(config):
+    payload = [
+        {
+            "cmd":"Login",
+            "param":{
+                "User":{
+                    "Version":"0",
+                    "userName":config["reolink"]["nvr_un"],
+                    "password":config["reolink"]["nvr_pw"]
+                }
+            }
+        }
+    ]
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
+
+
+def alm_state(config,token):
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
+
+
+def get_dev_info(config,token):
+    payload = [
+        {
+            "cmd":"GetChannelStatus",
+        }
+    ]
+    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={token}', json=payload).json()
 
