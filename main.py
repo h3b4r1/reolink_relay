@@ -1,5 +1,6 @@
 import json
 import functions
+import urequests
 from machine import Pin, I2C
 from i2c_lcd import I2cLcd
 from time import sleep
@@ -30,7 +31,7 @@ def main(nvr_obj):
     token = 0
     while not token:
         try:
-            token = get_api_key(config)
+            token = get_api_token(config)
             print(f"new token : {token}")
         except Exception as error:
             print(f"API session limit exceeded : {error}")
@@ -58,7 +59,7 @@ def get_api_token(config):
             }
         }
     ]
-    return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
+    return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
 
 
 def alm_state(config,token):

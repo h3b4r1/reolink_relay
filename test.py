@@ -1,6 +1,7 @@
 import json
 import requests
 from time import sleep
+from functions import *
 
 with open('config.json.local') as fh:
     config = json.load(fh)
@@ -10,7 +11,7 @@ def main():
     token = 0
     while not token:
         try:
-            token = get_api_key(config)
+            token = get_api_token(config)
             print(f"new token : {token}")
         except Exception as error:
             print(f"API session limit exceeded : {error}")

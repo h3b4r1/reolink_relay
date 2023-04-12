@@ -13,7 +13,7 @@ class Reo_api:
         ''' instantiate the NVR object '''
         self.ip = ip
         self.api_cred = (config["reolink"]["nvr_un"],config["reolink"]["nvr_pw"])
-        self.api_token = get_api_token()
+        self._api_token = self.get_api_token(config)
         
         @property
         def __str__(self):
@@ -28,7 +28,7 @@ class Reo_api:
             return self._api_cred
         
         @api_key.setter
-        def api_cred(self,api_key):
+        def api_cred(self):
             if self.api_cred:
                 self._api_cred = self.api_cred
             else:
@@ -41,7 +41,7 @@ class Reo_api:
         @ip.setter
         def ip(self,ip):
             if self.ip:
-                self._ip = self.ip
+                self._ip = ip
             else:
                 raise ValueError("IP address is required")
             
@@ -75,7 +75,14 @@ class Reo_api:
                 }
             ]
             return requests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
-
+        
+        @property
+        def api_token():
+            retun self._api_token
+            
+        @api_token.setter
+        def api_token():
+            
         def alm_state(config,token):
             return requests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
 
