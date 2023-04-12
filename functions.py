@@ -80,11 +80,12 @@ class Reo_api:
             return requests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
         
         @property
-        def api_token():
-            retun self._api_token
+        def api_token(self):
+            return self._api_token
             
         @api_token.setter
-        def api_token():
+        def api_token(self, token):
+            self._api_token = token
             
         def alm_state(config,token):
             return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]

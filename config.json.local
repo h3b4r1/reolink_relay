@@ -1,7 +1,7 @@
 {
     "network": {
-        "ssid": "security",
-        "secret": "TindaleSecure1!"
+        "ssid": "myssid",
+        "secret": "mysecret"
     },
     "operation": {
         "poll_int": "5"
