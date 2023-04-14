@@ -1,5 +1,5 @@
 from time import sleep
-from functions import Reo_api, lcd_load, lcd_create, get_api_token, alm_state, get_dev_info
+from functions import *
 
 # Configure the LCD 
 lcd = lcd_create(0x27, 5, 4)
@@ -12,7 +12,7 @@ p2 = Pin(2, Pin.OUT)
 token = 0
 while not token:
     try:
-        token = get_api_key(config)
+        nvr = Reo_api(config)
     except Exception as error:
         lcd_load(lcd, "API Failure", sta_if.ifconfig()[0])
         sleep(10)
