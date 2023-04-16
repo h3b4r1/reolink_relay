@@ -1,7 +1,7 @@
 {
     "network": {
-        "ssid": "security",
-        "secret": "TindaleSecure1!"
+        "ssid": "itiot",
+        "secret": "B33fC4k3!"
     },
     "operation": {
         "poll_int": "5"

@@ -1,8 +1,11 @@
 import network
 import json
+import gc
 from time import sleep
 from machine import Pin
 
+# Enable garbage collection
+gc.enable()
 
 # Load config
 with open('config.json') as fh:
