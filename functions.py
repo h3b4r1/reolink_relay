@@ -50,22 +50,18 @@ class Reo_api:
         else:
             raise ValueError("IP address is required")
         
-    @property
     def alm_state(self):
         payload = '[{"cmd":"GetAlarm", "action": 1, "param":{"Alarm": {"type": "md", "channel": 0}}}]'
         return urequests.post(f'http://{self.ip}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload).json()
         
-    @property
     def get_api_token(self):
         payload = '[{"cmd":"Login", "param": {"User":{"Version":"0", "userName": self.api_cred[0], "password": self.api_cred[1]}}}]'
         return urequests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
     
 
-    @property
     def alm_state(config,token):
         return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
 
-    @property
     def get_dev_info(self,config):
         payload = [
             {

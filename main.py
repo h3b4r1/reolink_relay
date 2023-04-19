@@ -6,11 +6,12 @@ from time import sleep
 from functions import *
 
 # Configure the LCD 
-lcd = lcd_create(0x27, 5, 4)
+# lcd_create(<i2c addr>,<sdl>, <sda>)
+lcd = lcd_create(0x27, 22, 21)
 sleep(2)
 
 # Configure the siren
-p2 = Pin(2, Pin.OUT)
+p2 = Pin(15, Pin.OUT)
 
 # Set up API
 token = 0
@@ -25,7 +26,7 @@ def main(nvr_obj):
     token = 0
     while not token:
         try:
-            token = get_api_token(config)
+            token = nvr.get_api_token(config)
             print(f"new token : {token}")
         except Exception as error:
             print(f"API session limit exceeded : {error}")

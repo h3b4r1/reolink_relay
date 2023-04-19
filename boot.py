@@ -1,6 +1,7 @@
 import network
 import json
 import gc
+import webrepl
 from time import sleep
 from machine import Pin
 
@@ -12,7 +13,7 @@ with open('config.json') as fh:
     config = json.load(fh)
 
 # Configure the alarm Pin
-p2 = Pin(2, Pin.OUT)
+p2 = Pin(15, Pin.OUT)
 p2.value(0)
 
 
@@ -28,4 +29,4 @@ while not constate and count < 11:
     count += 1
     constate = sta_if.isconnected()
     print(".", end="")
-    
+
