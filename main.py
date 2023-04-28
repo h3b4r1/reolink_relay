@@ -14,7 +14,8 @@ p2 = Pin(2, Pin.OUT)
 
 # Set up API
 token = 0
-while not token:
+nvr = 0
+while not nvr:
     try:
         nvr = Reo_api(config,sta_if.ifconfig()[0])
     except Exception as error:
