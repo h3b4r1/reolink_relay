@@ -1,7 +1,6 @@
 import ujson
-import urequests
 from machine import Pin, I2C
-from i2c_lcd import I2cLcd
+# from i2c_lcd import I2cLcd
 from time import sleep
 from functions import *
 
@@ -14,7 +13,7 @@ p2 = Pin(2, Pin.OUT)
 
 # Load config
 with open('config.json') as fh:
-    config = json.load(fh)
+    config = ujson.load(fh)
 
 # Set up API
 nvr = 0
