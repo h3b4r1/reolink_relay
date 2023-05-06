@@ -1,5 +1,5 @@
 import network
-import json
+import ujson
 import gc
 from time import sleep
 from machine import Pin
@@ -7,13 +7,15 @@ from machine import Pin
 # Enable garbage collection
 gc.enable()
 
-# Load config
-with open('config.json') as fh:
-    config = json.load(fh)
-
+ 
 # Configure the alarm Pin
 p2 = Pin(2, Pin.OUT)
 p2.value(0)
+
+# Load config
+with open('config.json') as fh:
+    config = ujson.load(fh)
+    
 
 
 # Setup wifi connection

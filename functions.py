@@ -1,10 +1,9 @@
 import urequests
+import ujson
 from machine import Pin, I2C
 from i2c_lcd import I2cLcd
 
-
 class Reo_api:
-    _ipAddr = ""
     '''
     Class for accessing the reolink NVR API
     
@@ -13,66 +12,25 @@ class Reo_api:
     - provide for retreival of alarm state
     
     '''
-    def __init__(self, config, ipAddr):
+    def __init__(self, config):
         ''' instantiate the NVR object '''
-        self.ipAddr = ipAddr
         self.config = config
-        self.api_cred = (config["reolink"]["nvr_un"],config["reolink"]["nvr_pw"])
-        self._api_token = self.get_api_token(config)
-        
-    @property
-    def __str__(self):
-        ''' return true if request object valid '''
-        if self.api_obj:
-            return True
-        else:
-            return False
-        
-    @property
-    def api_cred(self):
-        return self._api_cred
+        self.get_api_token()
     
-    @api_cred.setter
-    def api_cred(self,credTup):
-        if credTup:
-            self._api_cred = credTup
-        else:
-            raise ValueError("NVR username and password are required")
-    
-    @property
-    def ip(self):
-        return self._ipAddr
-    
-    @ip.setter
-    def ip(self,ipAddr):
-        if self.ipAddr:
-            self._ipAddr = ipAddr
-        else:
-            raise ValueError("IP address is required")
-        
-    @property
     def alm_state(self):
-        payload = '[{"cmd":"GetAlarm", "action": 1, "param":{"Alarm": {"type": "md", "channel": 0}}}]'
-        return urequests.post(f'http://{self.ip}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload).json()
+        ''' get alarm state '''
+        payload = ujson.dumps({"cmd":"GetMdState","action":1,"param":{"channel":0}})
+        return urequests.post(f'http://{self.config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetAlarm&token={self.api_token}', json=payload, timeout=5).json()
         
-    @property
     def get_api_token(self):
-        payload = '[{"cmd":"Login", "param": {"User":{"Version":"0", "userName": self.api_cred[0], "password": self.api_cred[1]}}}]'
-        return urequests.post(f'http://{self.ip}/api.cgi?cmd=Login', json=payload).json()[0]["value"]["Token"]["name"]
-    
+        ''' Load api_token with a fresh token '''
+        payload = ujson.dumps({"cmd":"Login","param":{"User":{"Version":"0","userName":self.config["reolink"]["nvr_un"],"password":self.config["reolink"]["nvr_pw"]}}})
+        try:
+            self.api_token = urequests.post(f'http://{self.config["reolink"]["nvr_ip"]}/api.cgi?cmd=Login', json=payload, timeout=5).json()[0]["value"]["Token"]["name"]
+            return 0
+        except EXception as e:
+            raise ValueError(e)
 
-    @property
-    def alm_state(config,token):
-        return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetMdState&token={token}').json()[0]["value"]["state"]
-
-    @property
-    def get_dev_info(self,config):
-        payload = [
-            {
-                "cmd":"GetChannelStatus",
-            }
-        ]
-        return urequests.post(f'http://{config["reolink"]["nvr_ip"]}/api.cgi?cmd=GetChannelStatus&token={self.api_token}', json=payload).json()
 
 # LCD Functions
 def lcd_load(lcd, message="", address=""):

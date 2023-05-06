@@ -1,4 +1,4 @@
-# import json
+import ujson
 import urequests
 from machine import Pin, I2C
 from i2c_lcd import I2cLcd
@@ -12,40 +12,48 @@ sleep(2)
 # Configure the siren
 p2 = Pin(2, Pin.OUT)
 
+# Load config
+with open('config.json') as fh:
+    config = json.load(fh)
+
 # Set up API
-token = 0
 nvr = 0
 while not nvr:
     try:
-        nvr = Reo_api(config,sta_if.ifconfig()[0])
-    except Exception as error:
+        nvr = Reo_api(config)
+    except Exception as e:
         lcd_load(lcd, "API Failure", sta_if.ifconfig()[0])
         sleep(10)
 
-def main(nvr_obj):
-    token = 0
-    while not token:
-        try:
-            token = get_api_token(config)
-            print(f"new token : {token}")
-        except Exception as error:
-            print(f"API session limit exceeded : {error}")
-            sleep(10)
-    print(" ")
+def main():
+    counter = 30
     while True:
-        # Load IP to the LCD
+        # Get new token
+        if "error" in nvr.alm_state():
+            try:
+                nvr.get_api_token()
+            except Exception as error:
+                lcd_load(lcd, "Session Lim Excd", sta_if.ifconfig()[0])
+                sleep(10)
+            counter = 0
+
+        # Reload address
         if address != sta_if.ifconfig()[0]:
             address = sta_if.ifconfig()[0]
             lcd_load(lcd, message, address)
             sleep(2)
-        
+
         # Pull the alarm status
-        if alm_state(config, token):
+        # print(f'alarm state return is: {nvr.alm_state()[0]["value"]["state"]}')
+        if nvr.alm_state()[0]["value"]["state"]:
+            lcd_load(lcd, "Alarm Active", sta_if.ifconfig()[0])
             p2.value(1)
             sleep(5)
             p2.value(0)
             sleep(30)
+        lcd_load(lcd, "Alarm Ready", sta_if.ifconfig()[0])
         sleep(1)
+        counter += 1
 
 
 if __name__ == "__main__":
