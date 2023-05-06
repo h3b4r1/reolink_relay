@@ -1,17 +1,11 @@
 {
     "network": {
         "ssid": "<Wifi SSID>",
-        "secret": "<Wifi Password"
-    },
-    "operation": {
-        "poll_int": "5"
+        "secret": "<Wifi Password>"
     },
     "reolink": {
         "nvr_un": "<Reolink NVR Username>",
-        "nvr_pw": "Reolink NVR Password",
-        "nvr_ip": "Reolink NVR IP Address"
-    },
-    "output": {
-        "alm_duration": "int: alarm duration in seconds"
+        "nvr_pw": "<Reolink NVR Password>",
+        "nvr_ip": "<Reolink NVR IP Address>"
     }
 }

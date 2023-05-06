@@ -1,10 +1,10 @@
 # Reolink Relay
-This is a light micropython application that utilises a ESP8266 microcontroller
+This is a light micropython application that utilises a ESP32 microcontroller
 as an API client for a Reolink NVR with the intention of providing a method of 
 remotely triggering an external device such as an audio alarm or strobe light.
 
 ## Installation
-This build was done using a NodeMCU ESP8266 microcontroller running Micropython 
+This build was done using a NodeMCU ESP32 microcontroller running Micropython 
 version 1.19.
 
 [mbremote](https://docs.micropython.org/en/latest/reference/mpremote.html) was 
@@ -14,7 +14,7 @@ Additionally the config.json.example file needs to be renamed to config.json and
 the configuration values updated appropriately.
 
 # Hardware build
-The hardware build uses a NodeMCU ESP8266 microcontroller, however any microcontroller 
+The hardware build uses a ESP32 microcontroller, however any microcontroller 
 that supports Micropython should work with minimal change.
 The build uses an LCD with 2x16 charactors and a PCF8574 based i2c interface, for IP address 
 and error message feedback.

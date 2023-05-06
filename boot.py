@@ -7,7 +7,6 @@ from machine import Pin
 # Enable garbage collection
 gc.enable()
 
- 
 # Configure the alarm Pin
 p2 = Pin(2, Pin.OUT)
 p2.value(0)
@@ -15,8 +14,6 @@ p2.value(0)
 # Load config
 with open('config.json') as fh:
     config = ujson.load(fh)
-    
-
 
 # Setup wifi connection
 sleep(10)
