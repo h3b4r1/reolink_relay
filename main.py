@@ -8,12 +8,12 @@ from functions import *
 lcd = lcd_create(0x27, 5, 4)
 sleep(2)
 
-# Configure the siren
-p2 = Pin(2, Pin.OUT)
+# # Configure the siren
+# p2 = Pin(2, Pin.OUT)
 
-# Load config
-with open('config.json') as fh:
-    config = ujson.load(fh)
+# # Load config
+# with open('config.json') as fh:
+#     config = ujson.load(fh)
 
 # Set up API
 nvr = 0
