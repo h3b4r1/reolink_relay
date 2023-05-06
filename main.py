@@ -1,7 +1,7 @@
-import ujson
+# import ujson
 from machine import Pin, I2C
 # from i2c_lcd import I2cLcd
-from time import sleep
+from time import sleep, sleep_ms
 from functions import *
 
 # Configure the LCD 
@@ -31,8 +31,8 @@ def main():
         if "error" in nvr.alm_state():
             try:
                 nvr.get_api_token()
-            except Exception as error:
-                lcd_load(lcd, "Session Lim Excd", sta_if.ifconfig()[0])
+            except:
+                lcd_load(lcd, "Error: Sess lim", sta_if.ifconfig()[0])
                 sleep(10)
             counter = 0
 
@@ -46,9 +46,11 @@ def main():
         # print(f'alarm state return is: {nvr.alm_state()[0]["value"]["state"]}')
         if nvr.alm_state()[0]["value"]["state"]:
             lcd_load(lcd, "Alarm Active", sta_if.ifconfig()[0])
-            p2.value(1)
-            sleep(5)
-            p2.value(0)
+            for i in range(1,5):
+                p2.value(1)
+                sleep_ms(500)
+                p2.value(0)
+                sleep_ms(500)
             sleep(30)
         lcd_load(lcd, "Alarm Ready", sta_if.ifconfig()[0])
         sleep(1)
